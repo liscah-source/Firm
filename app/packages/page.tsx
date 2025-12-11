@@ -1,7 +1,10 @@
+import Link from "next/link";
+
 export default function PackagesPage() {
   const packages = [
     {
       id: 1,
+      slug: "start-up",
       icon: "🚀",
       title: "The Strategic Start-Up™",
       description: "For founders who want to launch the right way, ",
@@ -13,6 +16,7 @@ export default function PackagesPage() {
     },
     {
       id: 2,
+      slug: "brand",
       icon: "🛡️",
       title: "The Strategic Brand™",
       description: "For entrepreneurs ready to lock down their brand with IP that works ",
@@ -24,6 +28,7 @@ export default function PackagesPage() {
     },
     {
       id: 3,
+      slug: "contract",
       icon: "📋",
       title: "The Strategic Contract™",
       description: "For business owners who need to tighten their agreements ",
@@ -35,6 +40,7 @@ export default function PackagesPage() {
     },
     {
       id: 4,
+      slug: "scale",
       icon: "📈",
       title: "The Strategic Scale™",
       description: "For 6 and 7 figure businesses ready to bulletproof operations and ",
@@ -102,16 +108,17 @@ export default function PackagesPage() {
                 {pkg.period}
               </p>
 
-              {/* CTA Button - Placeholder for future package details */}
-              <button
-                className={`mt-8 w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 ${
+              {/* CTA Button */}
+              <Link
+                href={`/packages/${pkg.slug}`}
+                className={`mt-8 w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 block text-center ${
                   pkg.popular
                     ? "bg-white text-[#4BA5C8] hover:bg-gray-100"
                     : "bg-[#4BA5C8] text-white hover:bg-[#3A8AA8]"
                 }`}
               >
-                Learn More
-              </button>
+                View Pricing & Details
+              </Link>
             </div>
           ))}
         </div>

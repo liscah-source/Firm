@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Packages - Legal Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #eff6ff, #ffffff);
+            padding: 4rem 1rem;
+        }
+
+        .max-width {
+            max-width: 80rem;
+            margin: 0 auto;
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            color: #0B5B7F;
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: color 0.3s;
+        }
+
+        .back-btn:hover {
+            color: #4BA5C8;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            color: #4b5563;
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+
+        /* Package Selector */
+        .selector-box {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .selector-box h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1.5rem;
+        }
+
+        .package-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .package-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .package-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .package-option {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .package-option:hover:not(.disabled) {
+            border-color: #9ca3af;
+        }
+
+        .package-option.selected {
+            border-color: #4BA5C8;
+            background-color: #eff6ff;
+        }
+
+        .package-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .package-option-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .package-icon {
+            font-size: 1.5rem;
+        }
+
+        .checkmark {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #4BA5C8;
+        }
+
+        .package-category {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .package-name {
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+
+        .package-price {
+            color: #0B5B7F;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Comparison Table */
+        .comparison-table-wrapper {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f9fafb;
+        }
+
+        th {
+            padding: 1.5rem 1.5rem;
+            text-align: center;
+            border-bottom: 2px solid #e5e7eb;
+            font-weight: 700;
+        }
+
+        th:first-child {
+            text-align: left;
+            min-width: 200px;
+        }
+
+        th:not(:first-child) {
+            min-width: 250px;
+        }
+
+        .table-header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .table-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .table-category {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .table-tier {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .table-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0B5B7F;
+            margin-top: 0.25rem;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: white;
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td:first-child {
+            color: #374151;
+            font-size: 0.875rem;
+        }
+
+        td:not(:first-child) {
+            text-align: center;
+        }
+
+        .check-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #10b981;
+            margin: 0 auto;
+        }
+
+        .x-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #d1d5db;
+            margin: 0 auto;
+        }
+
+        tfoot {
+            background: #f9fafb;
+        }
+
+        tfoot td {
+            padding: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .select-btn {
+            width: 100%;
+            background: #C83E3E;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .select-btn:hover {
+            background: #B03535;
+        }
+
+        /* Footer CTA */
+        .footer-cta {
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-cta p {
+            color: #4b5563;
+            margin-bottom: 1rem;
+        }
+
+        .footer-cta button {
+            background: #111827;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .footer-cta button:hover {
+            background: #1f2937;
+        }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="max-width">
+            <!-- Back Button -->
+            <a href="#packages" class="back-btn">← Back to All Packages</a>
+
+            <!-- Header -->
+            <div class="header">
+                <h1>Compare Packages</h1>
+                <p>Select up to 3 packages to compare side-by-side</p>
+            </div>
+
+            <!-- Package Selector -->
+            <div class="selector-box">
+                <h2>Select Packages to Compare (<span id="selected-count">3</span>/3)</h2>
+                <div class="package-grid" id="package-grid">
+                    <!-- Package options will be inserted here by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="comparison-table-wrapper">
+                <div class="table-container">
+                    <table id="comparison-table">
+                        <!-- Table will be inserted here by JavaScript -->
+                    </table>
+                </div>
+            </div>
+
+            <!-- Footer CTA -->
+            <div class="footer-cta">
+                <p>Still not sure which package is right for you?</p>
+                <button>Schedule a Consultation</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Package Data
+        const allTiers = [
+            // Start-Up Packages
+            {
+                category: "Start-Up",
+                categoryIcon: "🚀",
+                tierName: "Foundation",
+                price: "$1,297",
+                features: [
+                    "LLC or Corporation Formation",
+                    "Basic LLC Operating Agreement/ Corporate Bylaws",
+                    "EIN Registration",
+                    "Beneficial Ownership Information (BOI) Report Filing",
+                    "Legal Document Binder",
+                    "Basic IP Assessment",
+                    "Client Portal Access"
+                ]
+            },
+            {
+                category: "Start-Up",
+                categoryIcon: "🚀",
+                tierName: "Growth",
+                price: "$3,447",
+                features: [
+                    "Everything in Foundation",
+                    "Advanced LLC Operating Agreement/ Corporate Bylaws",
+                    "Current State and Federal Employment Law Guide",
+                    "IP Protection Strategy",
+                    "Iron-Clad Non-Disclosure Agreement",
+                    "Contract Vault Evaluation and Advice"
+                ]
+            },
+            {
+                category: "Start-Up",
+                categoryIcon: "🚀",
+                tierName: "Scale",
+                price: "$8,497",
+                features: [
+                    "Everything in Growth",
+                    "Holding Company & Subsidiary Structuring",
+                    "Investment-Ready Docs",
+                    "Advanced IP Portfolio",
+                    "Full Legal Compliance Audit",
+                    "Standard Website Terms of Use & Privacy Policy",
+                    "(3) Monthly Legal Advisory Strategy Sessions"
+                ]
+            },
+            // Brand Packages
+            {
+                category: "Brand",
+                categoryIcon: "🛡️",
+                tierName: "Brand Shield",
+                price: "$2,497",
+                features: [
+                    "Comprehensive Trademark Clearance Search",
+                    "USPTO Trademark Application Preparation & Filing",
+                    "U.S. Attorney of Record",
+                    "All Non-Substantive Office Action Responses",
+                    "Domain & Social-Media Availability Check",
+                    "Legal Brand Usage Guidelines",
+                    "60-Day Brand Monitoring Post Registration",
+                    "30 Minute Attorney Client Phone Call",
+                    "Client Portal Access"
+                ]
+            },
+            {
+                category: "Brand",
+                categoryIcon: "🛡️",
+                tierName: "Brand Fortress",
+                price: "$3,997",
+                features: [
+                    "Everything in Brand Shield",
+                    "Trademark Filing in Two Additional Classes",
+                    "Priority Turnaround (3-5 Business Days)",
+                    "90-Day Brand Monitoring Post Registration",
+                    "45 Minute Attorney Client Zoom Call",
+                    "Custom IP Infringement Cease and Desist Letter",
+                    "Priority Text Support"
+                ]
+            },
+            {
+                category: "Brand",
+                categoryIcon: "🛡️",
+                tierName: "Brand Empire",
+                price: "$7,997",
+                features: [
+                    "Everything in Brand Fortress",
+                    "Trademark Filings in 5 U.S. Classes",
+                    "Madrid Protocol Application",
+                    "Patent Strategy Assessment",
+                    "Trade Secret Policy",
+                    "Monthly Attorney Client Strategy Session",
+                    "12-Month Active Infringement Monitoring",
+                    "Unlimited Cease-and-Desists for our Registered Marks"
+                ]
+            },
+            // Contract Packages
+            {
+                category: "Contract",
+                categoryIcon: "📋",
+                tierName: "Contract Review Essentials",
+                price: "$1,250",
+                features: [
+                    "Review of 1 contract",
+                    "Written legal summary of risks, obligations, and key terms",
+                    "Redline edits for clarity and enforceability",
+                    "Recommendations for protective clauses",
+                    "20-minute intro & follow-up Q&A call",
+                    "14 days of post-review email support",
+                    "Client Portal Access"
+                ]
+            },
+            {
+                category: "Contract",
+                categoryIcon: "📋",
+                tierName: "Contract Draft & Protect",
+                price: "$2,750",
+                features: [
+                    "Drafting of 1 fully customized contract (up to 15 pages) tailored to your industry and goals",
+                    "Inclusion of payment terms, scope control, and IP ownership clauses",
+                    "Up to 2 rounds of revisions within 30 days",
+                    "30-minute contract strategy call",
+                    "Negotiation talking points for your drafted contract"
+                ]
+            },
+            {
+                category: "Contract",
+                categoryIcon: "📋",
+                tierName: "Contract Advice & Negotiation",
+                price: "$4,950",
+                features: [
+                    "Direct negotiation support: up to 2 negotiation sessions with the other party or their counsel",
+                    "Customized negotiation strategy & risk management plan",
+                    "45-minute quarterly contract review session (valid for 6 months)",
+                    "Priority email support for 60 days"
+                ]
+            },
+            // Scale Packages
+            {
+                category: "Scale",
+                categoryIcon: "📈",
+                tierName: "Strategic Advisor",
+                price: "$2,500/mo",
+                features: [
+                    "$3,000 in monthly legal service credits",
+                    "5 hours of strategic legal advisory per month",
+                    "Quarterly legal compliance review",
+                    "Priority email response (within 24 hours)",
+                    "Monthly strategy session (60 minutes)",
+                    "Access to contract template library",
+                    "Document review and feedback",
+                    "Client Portal Access"
+                ]
+            },
+            {
+                category: "Scale",
+                categoryIcon: "📈",
+                tierName: "Strategic Partner",
+                price: "$5,000/mo",
+                features: [
+                    "$6,500 in monthly legal service credits",
+                    "12 hours of strategic legal advisory per month",
+                    "Bi-weekly legal compliance reviews",
+                    "Priority phone & email support (within 12 hours)",
+                    "Bi-weekly strategy sessions (60 minutes each)",
+                    "Unlimited contract template access",
+                    "Proactive risk assessment and mitigation",
+                    "Employment law guidance and HR support",
+                    "IP portfolio management",
+                    "Vendor and client contract negotiations"
+                ]
+            },
+            {
+                category: "Scale",
+                categoryIcon: "📈",
+                tierName: "Strategic Counsel",
+                price: "$10,000/mo",
+                features: [
+                    "$13,000 in monthly legal service credits",
+                    "25 hours of strategic legal advisory per month",
+                    "Weekly legal compliance audits",
+                    "24/7 emergency legal support",
+                    "Weekly strategy sessions (90 minutes each)",
+                    "Dedicated legal team assigned to your business",
+                    "Board meeting attendance and preparation",
+                    "M&A transaction support",
+                    "Fundraising and investor agreement guidance",
+                    "Litigation management and outside counsel coordination",
+                    "Regulatory compliance program development",
+                    "Executive team legal training"
+                ]
+            }
+        ];
+
+        // State
+        let selectedTiers = [0, 4, 7]; // Default selections
+
+        // Initialize
+        function init() {
+            renderPackageGrid();
+            renderComparisonTable();
+        }
+
+        // Render Package Grid
+        function renderPackageGrid() {
+            const grid = document.getElementById('package-grid');
+            grid.innerHTML = '';
+
+            allTiers.forEach((tier, index) => {
+                const isSelected = selectedTiers.includes(index);
+                const isDisabled = !isSelected && selectedTiers.length >= 3;
+
+                const option = document.createElement('div');
+                option.className = `package-option ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`;
+                option.onclick = () => !isDisabled && toggleTier(index);
+
+                option.innerHTML = `
+                    <div class="package-option-header">
+                        <span class="package-icon">${tier.categoryIcon}</span>
+                        ${isSelected ? '<svg class="checkmark" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>' : ''}
+                    </div>
+                    <div class="package-category">${tier.category}</div>
+                    <div class="package-name">${tier.tierName}</div>
+                    <div class="package-price">${tier.price}</div>
+                `;
+
+                grid.appendChild(option);
+            });
+
+            document.getElementById('selected-count').textContent = selectedTiers.length;
+        }
+
+        // Toggle Tier Selection
+        function toggleTier(index) {
+            if (selectedTiers.includes(index)) {
+                if (selectedTiers.length > 1) {
+                    selectedTiers = selectedTiers.filter(i => i !== index);
+                }
+            } else {
+                if (selectedTiers.length < 3) {
+                    selectedTiers.push(index);
+                }
+            }
+
+            renderPackageGrid();
+            renderComparisonTable();
+        }
+
+        // Render Comparison Table
+        function renderComparisonTable() {
+            const table = document.getElementById('comparison-table');
+            const selectedPackages = selectedTiers.map(index => allTiers[index]);
+
+            // Get all unique features
+            const allFeatures = Array.from(new Set(selectedPackages.flatMap(pkg => pkg.features)));
+
+            // Build table HTML
+            let html = '<thead><tr>';
+            html += '<th>Feature</th>';
+            selectedPackages.forEach(pkg => {
+                html += `
+                    <th>
+                        <div class="table-header-content">
+                            <span class="table-icon">${pkg.categoryIcon}</span>
+                            <div class="table-category">${pkg.category}</div>
+                            <div class="table-tier">${pkg.tierName}</div>
+                            <div class="table-price">${pkg.price}</div>
+                        </div>
+                    </th>
+                `;
+            });
+            html += '</tr></thead>';
+
+            // Body
+            html += '<tbody>';
+            allFeatures.forEach(feature => {
+                html += '<tr>';
+                html += `<td>${feature}</td>`;
+                selectedPackages.forEach(pkg => {
+                    const hasFeature = pkg.features.includes(feature);
+                    html += `
+                        <td>
+                            ${hasFeature
+                                ? '<svg class="check-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>'
+                                : '<svg class="x-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>'
+                            }
+                        </td>
+                    `;
+                });
+                html += '</tr>';
+            });
+            html += '</tbody>';
+
+            // Footer
+            html += '<tfoot><tr>';
+            html += '<td>Select Package</td>';
+            selectedPackages.forEach(pkg => {
+                html += `
+                    <td>
+                        <button class="select-btn">Get ${pkg.tierName}</button>
+                    </td>
+                `;
+            });
+            html += '</tr></tfoot>';
+
+            table.innerHTML = html;
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>

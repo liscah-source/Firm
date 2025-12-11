@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Packages - Strategic Legal Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #eff6ff, #ffffff);
+            padding: 4rem 1rem;
+        }
+
+        .max-width {
+            max-width: 80rem;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            color: #4b5563;
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+
+        /* Compare Button */
+        .compare-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .compare-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            border: 2px solid #4BA5C8;
+            color: #4BA5C8;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .compare-btn:hover {
+            background-color: #eff6ff;
+        }
+
+        .compare-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        /* Packages Grid */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (min-width: 768px) {
+            .packages-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        /* Package Card */
+        .package-card {
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .package-card.white {
+            background: white;
+            border: 4px solid #f3f4f6;
+        }
+
+        .package-card.blue {
+            background: #4BA5C8;
+            border: 4px solid #60a5fa;
+        }
+
+        /* Popular Badge */
+        .popular-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: white;
+            color: #4BA5C8;
+            padding: 0.5rem 1.5rem;
+            border-bottom-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* Icon */
+        .icon-container {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .icon-container.blue-bg {
+            background: #dbeafe;
+        }
+
+        .icon-container.blue-light-bg {
+            background: #5FB5D8;
+        }
+
+        .icon {
+            font-size: 2.25rem;
+        }
+
+        /* Title */
+        .package-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .package-title.dark {
+            color: #0B5B7F;
+        }
+
+        .package-title.white {
+            color: white;
+        }
+
+        /* Description */
+        .package-description {
+            font-size: 1.125rem;
+            line-height: 1.75;
+            margin-bottom: 2rem;
+        }
+
+        .package-description.dark {
+            color: #374151;
+        }
+
+        .package-description.white {
+            color: white;
+        }
+
+        .highlight {
+            font-weight: 700;
+        }
+
+        /* CTA Button */
+        .cta-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-btn.blue-btn {
+            background: #4BA5C8;
+            color: white;
+        }
+
+        .cta-btn.blue-btn:hover {
+            background: #3A8AA8;
+        }
+
+        .cta-btn.white-btn {
+            background: white;
+            color: #4BA5C8;
+        }
+
+        .cta-btn.white-btn:hover {
+            background: #f3f4f6;
+        }
+
+        /* Footer CTA */
+        .footer-cta {
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-cta p {
+            color: #4b5563;
+            margin-bottom: 1rem;
+        }
+
+        .footer-cta button {
+            background: #111827;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .footer-cta button:hover {
+            background: #1f2937;
+        }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .package-title {
+                font-size: 1.5rem;
+            }
+
+            .package-description {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="max-width">
+            <!-- Header -->
+            <div class="header">
+                <h1>Choose Your Strategic Package</h1>
+                <p>Select the legal package that best fits your business stage and goals</p>
+            </div>
+
+            <!-- Compare Button -->
+            <div class="compare-section">
+                <a href="#compare" class="compare-btn">
+                    <svg class="compare-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    Compare Packages Side-by-Side
+                </a>
+            </div>
+
+            <!-- Packages Grid -->
+            <div class="packages-grid">
+                <!-- Package 1: Strategic Start-Up -->
+                <div class="package-card white">
+                    <div class="icon-container blue-bg">
+                        <span class="icon">🚀</span>
+                    </div>
+                    <h2 class="package-title dark">The Strategic Start-Up™</h2>
+                    <p class="package-description dark">
+                        For founders who want to launch the right way,
+                        <span class="highlight">legally and strategically</span>.
+                    </p>
+                    <a href="#start-up" class="cta-btn blue-btn">View Pricing & Details</a>
+                </div>
+
+                <!-- Package 2: Strategic Brand (Most Popular) -->
+                <div class="package-card blue">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <div class="icon-container blue-light-bg">
+                        <span class="icon">🛡️</span>
+                    </div>
+                    <h2 class="package-title white">The Strategic Brand™</h2>
+                    <p class="package-description white">
+                        For entrepreneurs ready to lock down their brand with IP that works
+                        <span class="highlight">for</span> them.
+                    </p>
+                    <a href="#brand" class="cta-btn white-btn">View Pricing & Details</a>
+                </div>
+
+                <!-- Package 3: Strategic Contract -->
+                <div class="package-card white">
+                    <div class="icon-container blue-bg">
+                        <span class="icon">📋</span>
+                    </div>
+                    <h2 class="package-title dark">The Strategic Contract™</h2>
+                    <p class="package-description dark">
+                        For business owners who need to tighten their agreements
+                        <span class="highlight">before</span> things fall apart.
+                    </p>
+                    <a href="#contract" class="cta-btn blue-btn">View Pricing & Details</a>
+                </div>
+
+                <!-- Package 4: Strategic Scale -->
+                <div class="package-card white">
+                    <div class="icon-container blue-bg">
+                        <span class="icon">📈</span>
+                    </div>
+                    <h2 class="package-title dark">The Strategic Scale™</h2>
+                    <p class="package-description dark">
+                        For 6 and 7 figure businesses ready to bulletproof operations and
+                        <span class="highlight">expand</span>.
+                    </p>
+                    <a href="#scale" class="cta-btn blue-btn">View Pricing & Details</a>
+                </div>
+            </div>
+
+            <!-- Footer CTA -->
+            <div class="footer-cta">
+                <p>Not sure which package is right for you?</p>
+                <button>Schedule a Consultation</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
